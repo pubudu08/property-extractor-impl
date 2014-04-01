@@ -31,27 +31,46 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
+
 
 public class ModuleProperties implements IPropertyExtractor {
     private static final Log log = LogFactory.getLog(ModuleProperties.class);
-    private List<APIWrapper> apiList = new ArrayList<APIWrapper>();
+    private APIWrapper apiWrapper;
+
+    public static final String JENKINS = "jenkins";
+    public static final String BAMBOO = "bamboo";
+    public static final String JIRA = "jira";
+    public static final String REDMINE = "redmine";
+    public static final String GITHUB = "github";
+    public static final String SVN = "svn";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String JENKINS_SECRET_ALIAS= "superuser.jenkins.password";
+    public static final String BAMBOO_SECRET_ALIAS= "superuser.bamboo.password";
+    public static final String REDMINE_SECRET_ALIAS= "superuser.redmine.password";
+    public static final String JIRA_SECRET_ALIAS= "superuser.jira.password";
+    public static final String GITHUB_SECRET_ALIAS= "superuser.github.password";
+    public static final String SVN_SECRET_ALIAS= "superuser.svn.password";
+
+    public APIWrapper getApiWrapper() {
+        return apiWrapper;
+    }
+
+    private void setApiWrapper(APIWrapper apiWrapper) {
+        this.apiWrapper = apiWrapper;
+    }
 
     public ModuleProperties() {
         xmlExtractor();
     }
 
-    public List<APIWrapper> getApiList() {
-        return apiList;
-    }
 
     @Override
     public void xmlExtractor() {
         FileInputStream fileInputStream = null;
         //Assumed that configuration file is under the <PRODUCT_HOME>/repository/conf, check Resource folder for the file
-        /*String configPath = CarbonUtils.getCarbonHome() + File.separator + "repository" + File.separator + "conf" +
+       /* String configPath = CarbonUtils.getCarbonHome() + File.separator + "repository" + File.separator + "conf" +
                 File.separator + "superuser-api-config.xml";*/
         String configPath = File.separator + "home" + File.separator + "pubudu" +
                 File.separator + "Desktop" + File.separator + "superuser-api-config.xml";
@@ -64,34 +83,74 @@ public class ModuleProperties implements IPropertyExtractor {
                 OMElement configElement = builder.getDocumentElement();
                 //Initialize the SecretResolver providing the configuration element.
                 SecretResolver secretResolver = SecretResolverFactory.create(configElement, false);
-                QName elementQName = new QName("module");
-                Iterator infoIter =
-                        configElement.getChildrenWithName(elementQName);
+                setApiWrapper(new APIWrapper());
 
-                while (infoIter.hasNext()) {
-
-                    OMElement element = (OMElement) infoIter.next();
-                    APIWrapper apiWrapper = new APIWrapper();
-                    if (element != null) {
-                        apiWrapper.setUsername(element.getFirstChildWithName(new QName("username")).getText());
-                        apiWrapper.setServerURL(element.getAttributeValue(new QName("serverURL")));
-                        apiWrapper.setRemote(element.getAttributeValue(new QName("remote")));
-                        apiWrapper.setApiName(element.getAttributeValue(new QName("apiName")));
-
-                        String secretAlias = "superuser.module.password";
-                        if (secretResolver != null && secretResolver.isInitialized()) {
-                            if (secretResolver.isTokenProtected(secretAlias)) {
-                                apiWrapper.setPassword(secretResolver.resolve(secretAlias));
-                            } else {
-                                apiWrapper.setPassword(element.getFirstChildWithName(new QName("password")).getText());
-                            }
-                        }
-
+                //extracting jenkins Server data
+                OMElement jenkinsModule = configElement.getFirstChildWithName(new QName(JENKINS));
+                apiWrapper.setJenkinsUsername(jenkinsModule.getFirstChildWithName(new QName(USERNAME)).getText());
+                String jenkinsSecretAlias = JENKINS_SECRET_ALIAS;
+                if (secretResolver != null && secretResolver.isInitialized()) {
+                    if (secretResolver.isTokenProtected(jenkinsSecretAlias)) {
+                        apiWrapper.setJenkinsPassword(secretResolver.resolve(jenkinsSecretAlias));
+                    } else {
+                        apiWrapper.setJenkinsPassword(jenkinsModule.getFirstChildWithName(new QName(PASSWORD)).getText());
                     }
-                    apiList.add(apiWrapper);
                 }
-
-
+                //extracting Bamboo Server data
+                OMElement bambooModule = configElement.getFirstChildWithName(new QName(BAMBOO));
+                apiWrapper.setBambooUsername(bambooModule.getFirstChildWithName(new QName(USERNAME)).getText());
+                String bambooSecretAlias = BAMBOO_SECRET_ALIAS;
+                if (secretResolver != null && secretResolver.isInitialized()) {
+                    if (secretResolver.isTokenProtected(bambooSecretAlias)) {
+                        apiWrapper.setBambooPassword(secretResolver.resolve(bambooSecretAlias));
+                    } else {
+                        apiWrapper.setBambooPassword(bambooModule.getFirstChildWithName(new QName(PASSWORD)).getText());
+                    }
+                }
+                //extracting RedMine Server data
+                OMElement redmineModule = configElement.getFirstChildWithName(new QName(REDMINE));
+                apiWrapper.setRedmineUsername(redmineModule.getFirstChildWithName(new QName(USERNAME)).getText());
+                String redmineSecretAlias = REDMINE_SECRET_ALIAS;
+                if (secretResolver != null && secretResolver.isInitialized()) {
+                    if (secretResolver.isTokenProtected(redmineSecretAlias)) {
+                        apiWrapper.setRedminePassword(secretResolver.resolve(redmineSecretAlias));
+                    } else {
+                        apiWrapper.setRedminePassword(redmineModule.getFirstChildWithName(new QName(PASSWORD)).getText());
+                    }
+                }
+                //extracting Jira Server data
+                OMElement jiraModule = configElement.getFirstChildWithName(new QName(JIRA));
+                apiWrapper.setJiraUsername(jiraModule.getFirstChildWithName(new QName(USERNAME)).getText());
+                String jiraSecretAlias = JIRA_SECRET_ALIAS;
+                if (secretResolver != null && secretResolver.isInitialized()) {
+                    if (secretResolver.isTokenProtected(jiraSecretAlias)) {
+                        apiWrapper.setJiraPassword(secretResolver.resolve(jiraSecretAlias));
+                    } else {
+                        apiWrapper.setJiraPassword(jiraModule.getFirstChildWithName(new QName(PASSWORD)).getText());
+                    }
+                }
+                //extracting GitHub Server data
+                OMElement gitHubModule = configElement.getFirstChildWithName(new QName(GITHUB));
+                apiWrapper.setGitHubUsername(gitHubModule.getFirstChildWithName(new QName(USERNAME)).getText());
+                String gitHubSecretAlias =GITHUB_SECRET_ALIAS;
+                if (secretResolver != null && secretResolver.isInitialized()) {
+                    if (secretResolver.isTokenProtected(gitHubSecretAlias)) {
+                        apiWrapper.setGitHubPassword(secretResolver.resolve(gitHubSecretAlias));
+                    } else {
+                        apiWrapper.setGitHubPassword(gitHubModule.getFirstChildWithName(new QName(PASSWORD)).getText());
+                    }
+                }
+                //extracting SVN Server data
+                OMElement svnModule = configElement.getFirstChildWithName(new QName(SVN));
+                apiWrapper.setSvnUsername(svnModule.getFirstChildWithName(new QName(USERNAME)).getText());
+                String svnSecretAlias =SVN_SECRET_ALIAS;
+                if (secretResolver != null && secretResolver.isInitialized()) {
+                    if (secretResolver.isTokenProtected(svnSecretAlias)) {
+                        apiWrapper.setSvnPassword(secretResolver.resolve(svnSecretAlias));
+                    } else {
+                        apiWrapper.setSvnPassword(svnModule.getFirstChildWithName(new QName(PASSWORD)).getText());
+                    }
+                }
             } catch (XMLStreamException e) {
                 log.error("Unable to parse superuser-api-config", e);
             } catch (IOException e) {

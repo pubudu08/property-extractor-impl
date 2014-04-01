@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Copy this xml file to <PRODUCT_HOME>/repository/conf-->
 <superuser>
-        <module apiName ="jenkins" serverURL="local://services/" remote="false">
-            <username>admin</username>
-            <password>admin</password>
-        </module>
-        <module name ="bamboo" serverURL="local://services/" remote="false">
-            <username>admin</username>
-            <password>admin</password>
-        </module>
-        <module name ="redmine" serverURL="local://services/" remote="false">
-            <username>admin</username>
-            <password>admin</password>
-        </module>
-        <module name ="jira" serverURL="local://services/" remote="false">
-            <username>admin</username>
-            <password>admin</password>
-        </module>
-        <module name ="github" serverURL="local://services/" remote="false">
-            <username>admin</username>
-            <password>admin</password>
-        </module>
-        <module name ="svn" serverURL="local://services/" remote="false">
-            <username>admin</username>
-            <password>admin</password>
-        </module>
+        <jenkins apiName ="jenkins" serverURL="local://services/" remote="false">
+            <username>jenkins</username>
+            <password>jenkins</password>
+        </jenkins>
+        <bamboo apiName ="bamboo" serverURL="local://services/" remote="false">
+            <username>bamboo</username>
+            <password>bamboo</password>
+        </bamboo>
+        <redmine apiName ="redmine" serverURL="local://services/" remote="false">
+            <username>redmine</username>
+            <password>redmine</password>
+        </redmine>
+        <jira apiName ="jira" serverURL="local://services/" remote="false">
+            <username>jira</username>
+            <password>jira</password>
+        </jira>
+        <github apiName ="github" serverURL="local://services/" remote="false">
+            <username>github</username>
+            <password>github</password>
+        </github>
+        <svn apiName ="svn" serverURL="local://services/" remote="false">
+            <username>svn</username>
+            <password>svn</password>
+        </svn>
  </superuser>
