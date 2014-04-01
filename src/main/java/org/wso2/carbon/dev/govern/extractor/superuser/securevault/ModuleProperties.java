@@ -31,86 +31,67 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ModuleProperties implements IPropertyExtractor {
     private static final Log log = LogFactory.getLog(ModuleProperties.class);
-    private String username;
-    private String password;
-    private String serverURL;
-    private String remote;
+    private List<APIWrapper> apiList = new ArrayList<APIWrapper>();
 
     public ModuleProperties() {
         xmlExtractor();
     }
 
-    public String getUsername() {
-
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getServerURL() {
-        return serverURL;
-    }
-
-    public void setServerURL(String serverURL) {
-        this.serverURL = serverURL;
-    }
-
-    public boolean isRemote() {
-        return Boolean.valueOf(remote);
-    }
-
-    public void setRemote(String remote) {
-        this.remote = remote;
+    public List<APIWrapper> getApiList() {
+        return apiList;
     }
 
     @Override
     public void xmlExtractor() {
         FileInputStream fileInputStream = null;
-        //Assumed that configuration file is under the <PRODUCT_HOME>/repository/conf
-        String configPath = CarbonUtils.getCarbonHome() + File.separator + "repository" + File.separator + "conf" +
-                File.separator + "superuser-api-config.xml";
+        //Assumed that configuration file is under the <PRODUCT_HOME>/repository/conf, check Resource folder for the file
+        /*String configPath = CarbonUtils.getCarbonHome() + File.separator + "repository" + File.separator + "conf" +
+                File.separator + "superuser-api-config.xml";*/
+        String configPath = File.separator + "home" + File.separator + "pubudu" +
+                File.separator + "Desktop" + File.separator + "superuser-api-config.xml";
 
         File registryXML = new File(configPath);
         if (registryXML.exists()) {
             try {
                 fileInputStream = new FileInputStream(registryXML);
-
                 StAXOMBuilder builder = new StAXOMBuilder(fileInputStream);
                 OMElement configElement = builder.getDocumentElement();
                 //Initialize the SecretResolver providing the configuration element.
                 SecretResolver secretResolver = SecretResolverFactory.create(configElement, false);
-                OMElement module = configElement.getFirstChildWithName(new QName("module"));
+                QName elementQName = new QName("module");
+                Iterator infoIter =
+                        configElement.getChildrenWithName(elementQName);
 
-                if (module != null) {
-                    setUsername(module.getFirstChildWithName(new QName("username")).getText());
+                while (infoIter.hasNext()) {
 
-                    //same entry used in cipher-text.properties and cipher-tool.properties.
-                    String secretAlias = "superuser.module.password";
+                    OMElement element = (OMElement) infoIter.next();
+                    APIWrapper apiWrapper = new APIWrapper();
+                    if (element != null) {
+                        apiWrapper.setUsername(element.getFirstChildWithName(new QName("username")).getText());
+                        apiWrapper.setServerURL(element.getAttributeValue(new QName("serverURL")));
+                        apiWrapper.setRemote(element.getAttributeValue(new QName("remote")));
+                        apiWrapper.setApiName(element.getAttributeValue(new QName("apiName")));
 
-                    //Resolved the secret password.
-                    if (secretResolver != null && secretResolver.isInitialized()) {
-                        if (secretResolver.isTokenProtected(secretAlias)) {
-                            setPassword(secretResolver.resolve(secretAlias));
-                        } else {
-                            setPassword(module.getFirstChildWithName(new QName("password")).getText());
+                        String secretAlias = "superuser.module.password";
+                        if (secretResolver != null && secretResolver.isInitialized()) {
+                            if (secretResolver.isTokenProtected(secretAlias)) {
+                                apiWrapper.setPassword(secretResolver.resolve(secretAlias));
+                            } else {
+                                apiWrapper.setPassword(element.getFirstChildWithName(new QName("password")).getText());
+                            }
                         }
+
                     }
-                    setServerURL(module.getAttributeValue(new QName("serverURL")));
-                    setRemote(module.getAttributeValue(new QName("remote")));
+                    apiList.add(apiWrapper);
                 }
+
+
             } catch (XMLStreamException e) {
                 log.error("Unable to parse superuser-api-config", e);
             } catch (IOException e) {
