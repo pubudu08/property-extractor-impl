@@ -1,6 +1,6 @@
-package org.wso2.carbon.dev.govern.util.test;
+package org.wso2.carbon.dev.govern.extractor.superuser.test;
 
-import org.wso2.carbon.dev.govern.util.securevault.ModuleProperties;
+import org.wso2.carbon.dev.govern.extractor.superuser.securevault.ModuleProperties;
 
 /**
  * Created by pubudu on 3/31/14.

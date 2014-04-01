@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.wso2.carbon.dev.govern.util</groupId>
+    <groupId>org.wso2.carbon.dev.govern.extractor.superuser</groupId>
     <artifactId>SuperUserExtractor</artifactId>
     <version>1.0.0</version>
     <packaging>bundle</packaging>
@@ -41,6 +41,11 @@
             <artifactId>org.wso2.carbon.securevault</artifactId>
             <version>4.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.dev.govern.extractor</groupId>
+            <artifactId>PropertyExtractor</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -74,7 +79,7 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Export-Package>org.wso2.carbon.dev.govern.util.*;version=1.0.1,</Export-Package>
+                        <Export-Package>org.wso2.carbon.dev.govern.extractor.superuser.*;version=1.0.1,</Export-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
                 </configuration>

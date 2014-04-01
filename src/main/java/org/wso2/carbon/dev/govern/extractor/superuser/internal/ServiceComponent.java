@@ -1,17 +1,17 @@
-package org.wso2.carbon.dev.govern.util.internal;
+package org.wso2.carbon.dev.govern.extractor.superuser.internal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
-import org.wso2.carbon.dev.govern.util.IPropertyFile;
-import org.wso2.carbon.dev.govern.util.securevault.ModuleProperties;
+import org.wso2.carbon.dev.govern.extractor.IPropertyExtractor;
+import org.wso2.carbon.dev.govern.extractor.superuser.securevault.ModuleProperties;
 
 
 /**
  * Created by Pubudu Dissanayake - pubudud@wso2.com on 31/3/14.
- * @scr.component name="org.wso2.carbon.dev.govern.util"
+ * @scr.component name="org.wso2.carbon.dev.govern.extractor.superuser"
  * immediate="true"
  */
 public class ServiceComponent {
@@ -26,7 +26,7 @@ public class ServiceComponent {
         logger.info("SuperUser config extractor bundle is activated");
         moduleProperties= new ModuleProperties();
         bundleContext = componentContext.getBundleContext();
-        serviceRegistry = bundleContext.registerService(IPropertyFile.class,moduleProperties,null);
+        serviceRegistry = bundleContext.registerService(IPropertyExtractor.class,moduleProperties,null);
 
     }
 

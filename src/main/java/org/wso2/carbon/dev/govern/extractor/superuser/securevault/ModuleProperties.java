@@ -1,4 +1,4 @@
-package org.wso2.carbon.dev.govern.util.securevault;
+package org.wso2.carbon.dev.govern.extractor.superuser.securevault;
 
 /*
  * Copyright (c) 2006, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
@@ -21,7 +21,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.dev.govern.util.IPropertyFile;
+import org.wso2.carbon.dev.govern.extractor.IPropertyExtractor;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.securevault.SecretResolver;
 import org.wso2.securevault.SecretResolverFactory;
@@ -32,7 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class ModuleProperties implements IPropertyFile {
+public class ModuleProperties implements IPropertyExtractor {
     private static final Log log = LogFactory.getLog(ModuleProperties.class);
     private String username;
     private String password;
@@ -125,5 +125,10 @@ public class ModuleProperties implements IPropertyFile {
                 }
             }
         }
+    }
+
+    @Override
+    public void propertyfileExtractor() {
+
     }
 }
