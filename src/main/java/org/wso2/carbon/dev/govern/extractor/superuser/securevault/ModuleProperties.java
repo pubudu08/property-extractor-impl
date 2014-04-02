@@ -53,9 +53,6 @@ public class ModuleProperties implements IPropertyExtractor {
     public static final String GITHUB_SECRET_ALIAS= "superuser.github.password";
     public static final String SVN_SECRET_ALIAS= "superuser.svn.password";
 
-    public APIWrapper getApiWrapper() {
-        return apiWrapper;
-    }
 
     private void setApiWrapper(APIWrapper apiWrapper) {
         this.apiWrapper = apiWrapper;
@@ -64,16 +61,18 @@ public class ModuleProperties implements IPropertyExtractor {
     public ModuleProperties() {
         xmlExtractor();
     }
-
+    public APIWrapper getAPIConfigDetails(){
+        return apiWrapper;
+    }
 
     @Override
     public void xmlExtractor() {
         FileInputStream fileInputStream = null;
         //Assumed that configuration file is under the <PRODUCT_HOME>/repository/conf, check Resource folder for the file
-       /* String configPath = CarbonUtils.getCarbonHome() + File.separator + "repository" + File.separator + "conf" +
-                File.separator + "superuser-api-config.xml";*/
-        String configPath = File.separator + "home" + File.separator + "pubudu" +
-                File.separator + "Desktop" + File.separator + "superuser-api-config.xml";
+        String configPath = CarbonUtils.getCarbonHome() + File.separator + "repository" + File.separator + "conf" +
+                File.separator + "superuser-api-config.xml";
+       /* String configPath = File.separator + "home" + File.separator + "pubudu" +
+                File.separator + "Desktop" + File.separator + "superuser-api-config.xml";*/
 
         File registryXML = new File(configPath);
         if (registryXML.exists()) {

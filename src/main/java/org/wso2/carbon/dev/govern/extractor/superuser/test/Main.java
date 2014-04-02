@@ -9,8 +9,9 @@ import org.wso2.carbon.dev.govern.extractor.superuser.securevault.ModuleProperti
 public class Main {
     public static void main(String[] args) {
         ModuleProperties module = new ModuleProperties();
-        APIWrapper apiWrapper = module.getApiWrapper();
+        APIWrapper apiWrapper = module.getAPIConfigDetails();
         System.out.println(apiWrapper.getJenkinsUsername());
+        System.out.println(apiWrapper.getJenkinsPassword());
         System.out.println(apiWrapper.getBambooUsername());
         System.out.println(apiWrapper.getGitHubUsername());
         System.out.println(apiWrapper.getSvnUsername());
