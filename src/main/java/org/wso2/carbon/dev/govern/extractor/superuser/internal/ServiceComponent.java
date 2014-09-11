@@ -5,35 +5,36 @@ import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
-import org.wso2.carbon.dev.govern.extractor.IPropertyExtractor;
-import org.wso2.carbon.dev.govern.extractor.superuser.securevault.ModuleProperties;
+import org.wso2.carbon.dev.govern.extractor.superuser.securevault.SuperUserArtifacts;
 
 
 /**
  * Created by Pubudu Dissanayake - pubudud@wso2.com on 31/3/14.
+ *
  * @scr.component name="org.wso2.carbon.dev.govern.extractor.superuser"
  * immediate="true"
  */
 public class ServiceComponent {
 
-    private ServiceRegistration serviceRegistry;
-    private static BundleContext  bundleContext;
-    private static ModuleProperties moduleProperties;
-    private static final Log logger = LogFactory.getLog(ServiceComponent.class);
+	private static ServiceRegistration serviceRegistry;
+	private static BundleContext bundleContext;
+	private static SuperUserArtifacts superUserArtifacts;
+	private static final Log LOGGER = LogFactory.getLog(ServiceComponent.class);
 
 
-    public void activate(ComponentContext componentContext){
-        logger.info("SuperUser config extractor bundle is activated");
-        moduleProperties= new ModuleProperties();
-        bundleContext = componentContext.getBundleContext();
-        serviceRegistry = bundleContext.registerService(IPropertyExtractor.class,moduleProperties,null);
+	public void activate(ComponentContext componentContext) {
+		LOGGER.info("SuperUser config extractor bundle is activated");
+		superUserArtifacts = new SuperUserArtifacts();
+		superUserArtifacts.performSuperUserXMLPropertyExtraction();
+		bundleContext = componentContext.getBundleContext();
+		// serviceRegistry = bundleContext.registerService(IPropertyExtractor.class,superUserArtifacts,null);
 
-    }
+	}
 
-    public void deactivate(ComponentContext componentContext){
-        logger.info("SuperUser config extractor bundle is deactivated");
-        serviceRegistry.unregister();
-        bundleContext=null;
-        moduleProperties=null;
-    }
+	public void deactivate(ComponentContext componentContext) {
+		LOGGER.info("SuperUser config extractor bundle is deactivated");
+		serviceRegistry.unregister();
+		bundleContext = null;
+		superUserArtifacts = null;
+	}
 }

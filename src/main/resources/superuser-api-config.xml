@@ -1,28 +1,34 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Copy this xml file to <PRODUCT_HOME>/repository/conf-->
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <superuser>
-        <jenkins apiName ="jenkins" serverURL="local://services/" remote="false">
-            <username>jenkins</username>
-            <password>jenkins</password>
-        </jenkins>
-        <bamboo apiName ="bamboo" serverURL="local://services/" remote="false">
-            <username>bamboo</username>
-            <password>bamboo</password>
-        </bamboo>
-        <redmine apiName ="redmine" serverURL="local://services/" remote="false">
-            <username>redmine</username>
-            <password>redmine</password>
-        </redmine>
-        <jira apiName ="jira" serverURL="local://services/" remote="false">
-            <username>jira</username>
-            <password>jira</password>
-        </jira>
-        <github apiName ="github" serverURL="local://services/" remote="false">
-            <username>github</username>
-            <password>github</password>
-        </github>
-        <svn apiName ="svn" serverURL="local://services/" remote="false">
-            <username>svn</username>
-            <password>svn</password>
-        </svn>
- </superuser>
+    <user>
+        <username>UserJenkins</username>
+        <password>jenkins123</password>
+        <apiName>jenkins</apiName>
+        <serverURL>local://services/jenkins</serverURL>
+    </user>
+    <user>
+        <username>UserRedmine</username>
+        <password>Redmine123</password>
+        <apiName>redmine</apiName>
+        <serverURL>local://services/redmine</serverURL>
+    </user>
+    <user>
+        <username>UserGit</username>
+        <password>Git123</password>
+        <apiName>Git</apiName>
+        <serverURL>local://services/Git</serverURL>
+    </user>
+    <user>
+        <username>UserJira</username>
+        <password>Jira123</password>
+        <apiName>Jira</apiName>
+        <serverURL>local://services/jira</serverURL>
+    </user>
+    <user>
+        <username>UserSVN</username>
+        <password>SVN123</password>
+        <apiName>svn</apiName>
+        <serverURL>local://services/svn</serverURL>
+    </user>
+</superuser>
+

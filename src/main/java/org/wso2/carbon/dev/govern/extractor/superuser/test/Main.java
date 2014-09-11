@@ -1,21 +1,21 @@
 package org.wso2.carbon.dev.govern.extractor.superuser.test;
 
-import org.wso2.carbon.dev.govern.extractor.superuser.securevault.APIWrapper;
-import org.wso2.carbon.dev.govern.extractor.superuser.securevault.ModuleProperties;
+import org.wso2.carbon.dev.govern.extractor.superuser.securevault.SuperUserArtifacts;
+import org.wso2.carbon.dev.govern.extractor.superuser.securevault.UserArtifact;
 
 /**
  * Created by pubudu on 3/31/14.
  */
 public class Main {
     public static void main(String[] args) {
-        ModuleProperties module = new ModuleProperties();
-        APIWrapper apiWrapper = module.getAPIConfigDetails();
-        System.out.println(apiWrapper.getJenkinsUsername());
-        System.out.println(apiWrapper.getJenkinsPassword());
-        System.out.println(apiWrapper.getBambooUsername());
-        System.out.println(apiWrapper.getGitHubUsername());
-        System.out.println(apiWrapper.getSvnUsername());
-        System.out.println(apiWrapper.getRedmineUsername());
-        System.out.println(apiWrapper.getJiraUsername());
+
+	    SuperUserArtifacts superUserArtifacts = new SuperUserArtifacts();
+	    superUserArtifacts.performSuperUserXMLPropertyExtraction();
+
+	    for (UserArtifact userArtifact:superUserArtifacts.getUserArtifactArrayList()){
+		    System.out.println(userArtifact.getUsername());
+
+	    }
+	    System.out.println(superUserArtifacts.getUserArtifactArrayList().size());
     }
 }
