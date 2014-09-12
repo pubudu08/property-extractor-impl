@@ -7,6 +7,9 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.dev.govern.extractor.superuser.securevault.SuperUserArtifacts;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+
 
 /**
  * Created by Pubudu Dissanayake - pubudud@wso2.com on 31/3/14.
@@ -25,10 +28,15 @@ public class ServiceComponent {
 	public void activate(ComponentContext componentContext) {
 		LOGGER.info("SuperUser config extractor bundle is activated");
 		superUserArtifacts = new SuperUserArtifacts();
-		superUserArtifacts.performSuperUserXMLPropertyExtraction();
 		bundleContext = componentContext.getBundleContext();
 		// serviceRegistry = bundleContext.registerService(IPropertyExtractor.class,superUserArtifacts,null);
-
+		try {
+			superUserArtifacts.performSuperUserXMLPropertyExtraction();
+		} catch (IOException e) {
+			LOGGER.error("Unable to read superuser-api-config.xml", e);
+		} catch (XMLStreamException e) {
+			LOGGER.error("Unable to parse superuser-api-config.xml", e);
+		}
 	}
 
 	public void deactivate(ComponentContext componentContext) {

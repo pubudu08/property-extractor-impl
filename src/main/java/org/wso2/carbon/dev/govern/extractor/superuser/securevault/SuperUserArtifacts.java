@@ -21,6 +21,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.dev.govern.extractor.ArtifactPropertyValueExtractor;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.securevault.SecretResolver;
 import org.wso2.securevault.SecretResolverFactory;
@@ -37,7 +38,7 @@ import java.util.Iterator;
  * This class responsible of extracting properties from secured xml file
  * It will uses Secure vault implementation to retrieve password in the runtime environment
  */
-public class SuperUserArtifacts {
+public class SuperUserArtifacts implements ArtifactPropertyValueExtractor {
 	private static final Log LOGGER = LogFactory.getLog(SuperUserArtifacts.class);
 	private ArrayList<UserArtifact> userArtifactArrayList;
 
@@ -69,10 +70,11 @@ public class SuperUserArtifacts {
 	 * This method will extract all necessary artifact properties, which contained artifact's
 	 * username and password ( will be secured using SecureVault ).
 	 */
-	public void performSuperUserXMLPropertyExtraction() {
+	public void performSuperUserXMLPropertyExtraction() throws IOException, XMLStreamException {
 
 		FileInputStream fileInputStream = null;
-		//Assumed that configuration file is under the <PRODUCT_HOME>/repository/conf, check Resource folder for the file
+		//Assumed that configuration file is under the <PRODUCT_HOME>/repository/conf,
+		// check Resource folder for the file
 		String configPath = CarbonUtils.getCarbonHome() +
 		                    File.separator + "repository" + File.separator + "conf" +
 		                    File.separator + "superuser-api-config.xml";
@@ -108,15 +110,15 @@ public class SuperUserArtifacts {
 					}
 				}
 			} catch (XMLStreamException e) {
-				LOGGER.error("Unable to parse superuser-api-config", e);
+				throw new XMLStreamException();
 			} catch (IOException e) {
-				LOGGER.error("Unable to read superuser-api-config", e);
+				throw new IOException();
 			} finally {
 				if (fileInputStream != null) {
 					try {
 						fileInputStream.close();
 					} catch (IOException e) {
-						LOGGER.error("Failed to close the FileInputStream, file : " + configPath);
+						LOGGER.error("Failed to close the FileInputStream, file : " + configPath, e);
 					}
 				}
 			}
