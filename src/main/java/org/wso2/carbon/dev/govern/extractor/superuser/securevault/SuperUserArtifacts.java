@@ -74,11 +74,8 @@ public class SuperUserArtifacts implements ArtifactPropertyValueExtractor {
 		FileInputStream fileInputStream = null;
 		//Assumed that configuration file is under the <PRODUCT_HOME>/repository/conf,
 		// check Resource folder for the file
-/*		String configPath = CarbonUtils.getCarbonHome() +
+		String configPath = CarbonUtils.getCarbonHome() +
 		                    File.separator + "repository" + File.separator + "conf" +
-		                    File.separator + "superuser-api-config.xml";*/
-		String configPath =
-		                    File.separator + "home" + File.separator + "pubudu" + File.separator + "Desktop" +
 		                    File.separator + "superuser-api-config.xml";
 		File registryXML = new File(configPath);
 		setUserArtifactArrayList(new ArrayList<UserArtifact>());

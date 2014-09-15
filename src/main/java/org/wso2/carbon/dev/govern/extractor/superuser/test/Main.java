@@ -11,19 +11,20 @@ import org.wso2.carbon.dev.govern.extractor.superuser.securevault.UserArtifact;
  */
 public class Main {
 	private static final Log LOGGER = LogFactory.getLog(Main.class);
-    public static void main(String[] args) {
 
-	    SuperUserArtifacts superUserArtifacts = new SuperUserArtifacts();
-	    try {
-		    superUserArtifacts.performSuperUserXMLPropertyExtraction();
-	    } catch (GenericArtifactException exception) {
-		    LOGGER.error("Unable to parse superuser-api-config.xml", exception);
-	    }
+	public static void main(String[] args) {
 
-	    for (UserArtifact userArtifact:superUserArtifacts.getUserArtifactArrayList()){
-		    System.out.println(userArtifact.getUsername());
+		SuperUserArtifacts superUserArtifacts = new SuperUserArtifacts();
+		try {
+			superUserArtifacts.performSuperUserXMLPropertyExtraction();
+		} catch (GenericArtifactException exception) {
+			LOGGER.error("Unable to parse superuser-api-config.xml", exception);
+		}
 
-	    }
-	    System.out.println(superUserArtifacts.getUserArtifactArrayList().size());
-    }
+		for (UserArtifact userArtifact : superUserArtifacts.getUserArtifactArrayList()) {
+			System.out.println(userArtifact.getUsername());
+
+		}
+		System.out.println(superUserArtifacts.getUserArtifactArrayList().size());
+	}
 }

@@ -9,9 +9,6 @@ import org.wso2.carbon.dev.govern.extractor.ArtifactPropertyValueExtractor;
 import org.wso2.carbon.dev.govern.extractor.exception.GenericArtifactException;
 import org.wso2.carbon.dev.govern.extractor.superuser.securevault.SuperUserArtifacts;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-
 
 /**
  * Created by Pubudu Dissanayake - pubudud@wso2.com on 31/3/14.
