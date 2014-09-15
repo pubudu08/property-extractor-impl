@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<superuser>
-    <user>
+<accounts>
+    <account>
         <username>UserJenkins</username>
         <password>jenkins123</password>
         <apiName>jenkins</apiName>
         <serverURL>local://services/jenkins</serverURL>
-    </user>
-    <user>
+    </account>
+    <account>
         <username>UserRedmine</username>
         <password>Redmine123</password>
         <apiName>redmine</apiName>
         <serverURL>local://services/redmine</serverURL>
-    </user>
-    <user>
+    </account>
+    <account>
         <username>UserGit</username>
         <password>Git123</password>
         <apiName>Git</apiName>
         <serverURL>local://services/Git</serverURL>
-    </user>
-    <user>
+    </account>
+    <account>
         <username>UserJira</username>
         <password>Jira123</password>
         <apiName>Jira</apiName>
         <serverURL>local://services/jira</serverURL>
-    </user>
-    <user>
+    </account>
+    <account>
         <username>UserSVN</username>
         <password>SVN123</password>
         <apiName>svn</apiName>
         <serverURL>local://services/svn</serverURL>
-    </user>
-</superuser>
+    </account>
+</accounts>
 

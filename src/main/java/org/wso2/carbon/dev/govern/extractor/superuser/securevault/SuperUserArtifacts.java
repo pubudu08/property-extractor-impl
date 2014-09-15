@@ -22,6 +22,7 @@ import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.dev.govern.extractor.ArtifactPropertyValueExtractor;
+import org.wso2.carbon.dev.govern.extractor.exception.GenericArtifactException;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.securevault.SecretResolver;
 import org.wso2.securevault.SecretResolverFactory;
@@ -41,12 +42,10 @@ import java.util.Iterator;
 public class SuperUserArtifacts implements ArtifactPropertyValueExtractor {
 	private static final Log LOGGER = LogFactory.getLog(SuperUserArtifacts.class);
 	private ArrayList<UserArtifact> userArtifactArrayList;
-
 	public static final String API_TYPE = "apiName";
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
 	public static final String SERVER_URL = "serverURL";
-
 	public static final String ARTIFACT_SECRET_ALIAS = "superuser.artifact.password";
 
 	/**
@@ -70,13 +69,16 @@ public class SuperUserArtifacts implements ArtifactPropertyValueExtractor {
 	 * This method will extract all necessary artifact properties, which contained artifact's
 	 * username and password ( will be secured using SecureVault ).
 	 */
-	public void performSuperUserXMLPropertyExtraction() throws IOException, XMLStreamException {
+	public void performSuperUserXMLPropertyExtraction() throws GenericArtifactException {
 
 		FileInputStream fileInputStream = null;
 		//Assumed that configuration file is under the <PRODUCT_HOME>/repository/conf,
 		// check Resource folder for the file
-		String configPath = CarbonUtils.getCarbonHome() +
+/*		String configPath = CarbonUtils.getCarbonHome() +
 		                    File.separator + "repository" + File.separator + "conf" +
+		                    File.separator + "superuser-api-config.xml";*/
+		String configPath =
+		                    File.separator + "home" + File.separator + "pubudu" + File.separator + "Desktop" +
 		                    File.separator + "superuser-api-config.xml";
 		File registryXML = new File(configPath);
 		setUserArtifactArrayList(new ArrayList<UserArtifact>());
@@ -109,10 +111,12 @@ public class SuperUserArtifacts implements ArtifactPropertyValueExtractor {
 						userArtifactArrayList.add(userArtifact);
 					}
 				}
-			} catch (XMLStreamException e) {
-				throw new XMLStreamException();
-			} catch (IOException e) {
-				throw new IOException();
+			} catch (XMLStreamException exception) {
+				throw new GenericArtifactException("Unable to read superuser-api-config.xml",
+				  exception, "XML_Read_Error");
+			} catch (IOException exception) {
+				throw new GenericArtifactException("Unable to parse superuser-api-config.xml",
+				  exception, "XML_Parse_Error");
 			} finally {
 				if (fileInputStream != null) {
 					try {
